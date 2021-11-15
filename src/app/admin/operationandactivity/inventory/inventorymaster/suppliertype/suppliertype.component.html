@@ -1,0 +1,155 @@
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-lg-12 page-col-nopadding">
+                            <div class="card page-header-title card-title text-uppercase">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4"><span class="pagetitle"><i class="fas fa-users text-success font-size-18"></i>&nbsp; Supplier Type</span></div>
+                                        
+                                        <div class="col-lg-8  ">
+                                            <div style="float:right !important">
+                                               
+                                                <button   class="btn btn-secondary dropdown-toggle btn-option" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                   MORE OPTIONS<i class="mdi mdi-chevron-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right" style="position: absolute; transform: translate3d(-1px, 37px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
+                                                    <a class="dropdown-item" href="#" data-target="#addLeave" data-toggle="modal">Create New Leave</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+                    
+                    <div class="row">
+                        <div class="col-lg-4 col-left-nopadding">
+                            <form [formGroup]="suppliertypeForm" (ngSubmit)="submitForm()" class="needs-validation" novalidate>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <input type="hidden" formControlName="id" name="id" class="form-control" />
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                <label class="col-form-label">Supplier Type</label>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <input type="text" formControlName="name" name="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                                            </div>
+                                        </div>
+                                       
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="col-form-label">Description</label>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <textarea formControlName="description" name="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" style="height:70px !important"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:7px">
+                                            <div class="col-lg-5">
+                                                <label class="col-form-label">Status</label>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <select class="form-control" formControlName="status" name="status" >
+                                                    <option [value]=true>Active</option>
+                                                    <option [value]=false >Deactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-bottom:25px"></div>
+                                        <div class="row  button-items">
+                                            <div class="col-lg-12 text-sm-right ">
+                                                <button type="button" (click)="resetForm()" class="btn w-sm  btn-warning waves-effect waves-light">
+                                                    <i class="bx bx-revision  align-middle mr-1"></i><b>Reset</b>
+                                                </button>
+                                                <button   type="submit" class="btn w-sm btn-success waves-effect waves-light">
+                                                    <i class="bx bx-check-double    align-middle mr-1"></i><b> Save Group</b>
+                                                </button>
+                                              
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            
+
+                        </div>
+
+                        <div class="col-lg-8 page-col-nopadding">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert alert-secondary status-padding">
+                                        <div class="row" style="">
+                                            <div class="col-lg-9 ">
+                                                <button class="btn btn-info btn-sm  waves-effect waves-light m-1">{{totalRows}}</button>
+                                            </div>
+                                            
+                                            <div class="col-lg-3">
+                                                <input type="text" class="form-control" placeholder="Search" (keyup)="onKeyUpEvent($event)">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 table-responsive">
+                                            <table class="table   mb-0  table-centred">
+                                                <thead>
+                                                    <tr class="thead-light">
+                                                        
+                                                        <th>SNO</th> 
+                                                        <th>SUPPLIER TYPE</th> 
+                                                        
+                                                        <th>DESCRIPTION</th> 
+                                                        <th class="text-center">STATUS</th>
+                                                        <th   class="text-center">ACTION</th>  
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let suppliertype of suppliertypeFilteredList; let i = index">
+                                                        <td>{{i+1}}</td>
+                                                        <td>{{suppliertype.name}}</td>
+                                                        
+                                                        <td>{{suppliertype.description}}</td> 
+                                                        <td *ngIf="suppliertype.status" class="text-center">
+                                                            <span class="badge badge-pill badge-success">Active</span>
+                                                        </td>
+                                                        
+                                                        <td *ngIf="!suppliertype.status" class="text-center">
+                                                            <span class="badge badge-pill badge-danger">Deactive</span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="javascript:void(0);" (click)="updateForm(suppliertype.id)" class="action-icon text-success"> <i class="far fa-edit  font-size-14"></i></a>
+                                                            <a href="javascript:void(0);" (click)="deleteForm(suppliertype.id)"  class="action-icon text-danger"> <i class=" bx bxs-trash font-size-14"></i></a>
+                                                        </td>
+                                                    </tr> 
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                      
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+                <!-- container-fluid -->
+            </div>
