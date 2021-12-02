@@ -6,6 +6,7 @@ import { ItemcategoryComponent } from './itemcategory/itemcategory.component';
 import { SuppliertypeComponent } from './suppliertype/suppliertype.component';
 import { TaxComponent } from './tax/tax.component';
 import { SupplierComponent } from './supplier/supplier.component';
+import { ItemcreationComponent } from './itemcreation/itemcreation.component';
 
 
 const routes: Routes  = [
@@ -16,7 +17,8 @@ const routes: Routes  = [
       {path: 'itemcategory', component: ItemcategoryComponent},
       {path: 'suppliertype', component: SuppliertypeComponent},
       {path: 'tax', component: TaxComponent},
-      {path: 'supplier', component: SupplierComponent}
+      {path: 'supplier', component: SupplierComponent},
+      {path: 'itemcreation', component: ItemcreationComponent}
     ]
   }
 ];

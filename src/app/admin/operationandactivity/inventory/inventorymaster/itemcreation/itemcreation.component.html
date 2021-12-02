@@ -1,0 +1,400 @@
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-lg-12 page-col-nopadding">
+                <div class="card page-header-title card-title text-uppercase">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4"><span class="pagetitle"><i class="fas fa-users text-success font-size-18"></i>&nbsp; Item Creation</span></div>
+                            
+                            <div class="col-lg-8  ">
+                                <div style="float:right !important">
+                                    
+                                    <button   class="btn btn-secondary dropdown-toggle btn-option" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                       MORE OPTIONS<i class="mdi mdi-chevron-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" style="position: absolute; transform: translate3d(-1px, 37px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
+                                        <a class="dropdown-item" href="#" data-target="#addLeave" data-toggle="modal">Create New Leave</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        
+        <div class="row">
+            <div class="col-lg-4 col-left-nopadding">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Item Group</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <select class="form-control  ">
+                                            <option>Select Group</option>
+                                            <option>Books</option>
+                                        </select>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Item Category</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <select class="form-control  ">
+                                            <option>Select Category</option>
+                                            <option>Enlisgh Book</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+
+                        <div class="row"  >
+                            <div class="col-lg-12">
+                                <label class="col-form-label">Item Name</label>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12"> <label class="col-form-label">Item Code</label></div>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">SKU (Barcode)</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+                           
+                        </div>
+                     
+                        <div class="row"  >
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Unit</label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <select class="form-control">
+                                            <option>NOS</option>
+                                            <option>KG</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Item Type</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <select class="form-control">
+                                            <option>Select Type</option>
+                                            <option>Inventory</option>
+                                            <option>Capital</option>
+                                            <option>Consumable</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            
+                        </div>
+                         
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Size</label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <input type="text" class="form-control" value="0" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Color</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <select class="form-control">
+                                            <option>Select Color</option>
+                                            <option>White</option>
+                                            <option>Red</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Opening Stock</label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" value="0" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Tax</label>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <select class="form-control">
+                                            <option>Select Tax</option>
+                                            <option>18</option>
+                                            <option>9</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <h5 style="margin-top: 4px;margin-left: -15px;">%</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Cost</label>
+                                    </div>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" value="0"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Sale Rate</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <input type="text" class="form-control" value="0"/>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                         
+                         
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="col-form-label">Low Qty Alert</label>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="text" class="form-control" value="0"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row  margin-top">
+                            <div class="col-lg-12">
+                                <div class="custom-control custom-checkbox ">
+                                    <input type="checkbox" class="custom-control-input" id="chkbundledItem">
+                                    <label class="custom-control-label" for="chkbundledItem"> Is Bundled Product</label>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="row margin-top" id="bundledItems">
+                            <div class="col-lg-12" style="overflow-y:auto;max-height:200px">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th style="width:20%">CODE </th>
+                                            <th style="width:50%"> ITEM NAME </th>
+                                            <th style="width:15%" class="text-center"> QTY </th>
+                                            <th class="text-center"> <a id="btnHideShow" href="#"><i class="font-size-20 text-info fa-plus-square fas "></i></a> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                           <td>1022</td>
+                                           <td> 
+                                           <select class="form-control select2">
+                                               <option>Apply</option>
+                                           </select>
+                                           </td>
+                                           <td class="text-center"><input type="text" class="form-control" /></td>
+                                           <td class="text-center"><a href="#"><i class="far fa-window-close   text-danger font-size-18 m-1 "></i></a></td>
+                                       </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="col-form-label">Description</label>
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea class="form-control" style="height:50px !important"></textarea>
+                            </div>
+                        </div>.
+
+                        <div class="row"  >
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Image</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <input type="file" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Status</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <select class="form-control">
+                                            <option>Active</option>
+                                            <option>Deactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="row" style="margin-bottom:25px"></div>
+                        <div class="row button-items">
+                            <div class="col-lg-12 ">
+                                <button style="float:right;" class="btn w-sm btn-success waves-effect waves-light">
+                                    <i class="bx bx-check-double    align-middle mr-1"></i><b>Save Item</b>
+                                </button>
+                                <button style="float:right;" class="btn w-sm  btn-warning waves-effect waves-light">
+                                    <i class="bx bx-revision  align-middle mr-1"></i><b>Reset</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+
+            <div class="col-lg-8 page-col-nopadding">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert alert-secondary status-padding">
+                            <div class="row" style="">
+                                <div class="col-lg-8 ">
+                                    <button  class="btn btn-info btn-sm  waves-effect waves-light m-1">40</button>
+                                </div>
+                                
+                                <div class="col-lg-4">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 table-responsive">
+                                <table class="table table-striped mb-0 font-size-12">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th style="width:25%">ITEM NAME</th>
+                                            <th style="width:10%">SKU</th> 
+                                            <th style="width:10%" >SIZE</th>  
+                                            <th style="width:15%">COLOR</th>
+                                            <th style="width:10%">COST</th>
+                                            <th style="width:15%">SALE RATE</th> 
+                                            <th style="width:10%">TAX</th> 
+                                            <th style="width:10%" class="text-center">STATUS</th>
+                                            <th style="width:10%" class="text-center">ACTIONS</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of itemFilteredList; let i = index">
+                                            <td>{{item.itemName}}</td>
+                                            <td>{{item.sku}}</td>
+                                            <td>{{item.size}}</td>
+                                            <td>{{item.colorId}}</td>
+                                            <td>{{item.cost}}</td>
+                                            <td>{{item.saleRate}}</td>
+                                            <td>{{item.taxId}}</td>
+                                            <td class="text-center">
+                                                <span *ngIf="item.status" class="badge badge-pill badge-success">Active</span>
+                                                <span *ngIf="!item.status" class="badge badge-pill badge-danger">Deactive</span>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <a href="#" class="action-icon text-success"> <i class="far fa-edit  font-size-14"></i></a>
+                                                <a href="#" class="action-icon text-danger"> <i class=" bx bxs-trash font-size-14"></i></a>
+                                            </td>
+                                        </tr>
+                                         
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="card ">
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+    <!-- container-fluid -->
+</div>

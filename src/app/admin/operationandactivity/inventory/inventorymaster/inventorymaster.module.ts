@@ -10,10 +10,11 @@ import { ItemcategoryComponent } from './itemcategory/itemcategory.component';
 import { SuppliertypeComponent } from './suppliertype/suppliertype.component';
 import { TaxComponent } from './tax/tax.component';
 import { SupplierComponent } from './supplier/supplier.component';
+import { ItemcreationComponent } from './itemcreation/itemcreation.component';
 
 
 @NgModule({
-  declarations: [InventorymasterComponent, ItemgroupComponent, ItemcategoryComponent, SuppliertypeComponent, TaxComponent, SupplierComponent],
+  declarations: [InventorymasterComponent, ItemgroupComponent, ItemcategoryComponent, SuppliertypeComponent, TaxComponent, SupplierComponent, ItemcreationComponent],
   imports: [
     CommonModule,
     InventorymasterRoutingModule,

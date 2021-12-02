@@ -12,6 +12,7 @@ import { Supplier } from './models/supplier';
 import { Country } from './models/country';
 import { State } from './models/state';
 import { City } from './models/city';
+import { Item } from './models/item';
 
 @Injectable({
   providedIn: 'root'
@@ -245,6 +246,21 @@ getCityById(id): Observable<City> {
     catchError(this.errorHandler)
   );
 }
+
+getAllItems(): Observable<Item[]>{
+  return this.httpClient.get<Item[]>(environment.apiUrl + '/items/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getItemById(id): Observable<Item> {
+  return this.httpClient.get<Item>(environment.apiUrl + '/items/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
 errorHandler(error) {
       let errorMessage = '';
       if (error.error instanceof ErrorEvent) {
