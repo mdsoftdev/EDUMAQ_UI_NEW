@@ -13,6 +13,8 @@ import { Country } from './models/country';
 import { State } from './models/state';
 import { City } from './models/city';
 import { Item } from './models/item';
+import { Unit } from './models/unit';
+import { Color } from './models/color';
 
 @Injectable({
   providedIn: 'root'
@@ -256,6 +258,42 @@ getAllItems(): Observable<Item[]>{
 
 getItemById(id): Observable<Item> {
   return this.httpClient.get<Item>(environment.apiUrl + '/items/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+createItem(item): Observable<Item> {
+  return this.httpClient.post<Item>(environment.apiUrl + '/items/', JSON.stringify(item), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+updateItem(id, item): Observable<Item> {
+  // tslint:disable-next-line:max-line-length
+  return this.httpClient.put<Item>(environment.apiUrl + '/items/' + id, JSON.stringify(item), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+deleteItem(id) {
+  return this.httpClient.delete<Item>(environment.apiUrl + '/items/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getAllUnits(): Observable<Unit[]>{
+  return this.httpClient.get<Unit[]>(environment.apiUrl + '/units/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getAllColors(): Observable<Color[]>{
+  return this.httpClient.get<Color[]>(environment.apiUrl + '/colors/')
   .pipe(
     catchError(this.errorHandler)
   );

@@ -32,295 +32,294 @@
         
         <div class="row">
             <div class="col-lg-4 col-left-nopadding">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Item Group</label>
+                <form [formGroup]="itemcreationForm" (ngSubmit)="submitForm()" class="needs-validation" novalidate>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Item Group</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <select class="form-control" formControlName="itemGroupId" name="itemGroupId"  [ngClass]="{ 'is-invalid': submitted && f.itemGroupId.errors }">
+                                                <option value="">Select Group</option>
+                                                <option *ngFor="let itemgroup of itemGroups"  value={{itemgroup.id}}>{{itemgroup.name}}</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-12">
-                                        <select class="form-control  ">
-                                            <option>Select Group</option>
-                                            <option>Books</option>
-                                        </select>
+                                
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Item Category</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <select class="form-control" formControlName="itemCategoryId" name="itemCategoryId"  [ngClass]="{ 'is-invalid': submitted && f.itemCategoryId.errors }">
+                                                <option value="">Select Category</option>
+                                                <option *ngFor="let itemcategory of itemCategories"  value={{itemcategory.id}}>{{itemcategory.name}}</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                               
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Item Category</label>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <select class="form-control  ">
-                                            <option>Select Category</option>
-                                            <option>Enlisgh Book</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
+                        
 
-                        <div class="row"  >
-                            <div class="col-lg-12">
-                                <label class="col-form-label">Item Name</label>
-                            </div>
-                            <div class="col-lg-12">
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12"> <label class="col-form-label">Item Code</label></div>
-                                    <div class="col-lg-10">
-                                        <input type="text" class="form-control">
-                                    </div>
+                            <div class="row"  >
+                                <div class="col-lg-12">
+                                    <label class="col-form-label">Item Name</label>
                                 </div>
-                               
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">SKU (Barcode)</label>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <input type="text" class="form-control">
-                                    </div>
+                                <div class="col-lg-12">
+                                    <input type="text" class="form-control" formControlName="itemName" name="itemName" [ngClass]="{ 'is-invalid': submitted && f.itemName.errors }"/>
                                 </div>
-
                             </div>
-                           
-                        </div>
-                     
-                        <div class="row"  >
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Unit</label>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12"> <label class="col-form-label">Item Code</label></div>
+                                        <div class="col-lg-10">
+                                            <input type="text" class="form-control" formControlName="itemCode" name="itemCode" [ngClass]="{ 'is-invalid': submitted && f.itemCode.errors }">
+                                        </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                        <select class="form-control">
-                                            <option>NOS</option>
-                                            <option>KG</option>
-                                        </select>
-                                    </div>
+                                
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">SKU (Barcode)</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input type="text" class="form-control" formControlName="sku" name="sku" [ngClass]="{ 'is-invalid': submitted && f.sku.errors }">
+                                        </div>
+                                    </div>
 
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Item Type</label>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <select class="form-control">
-                                            <option>Select Type</option>
-                                            <option>Inventory</option>
-                                            <option>Capital</option>
-                                            <option>Consumable</option>
-                                        </select>
-                                    </div>
                                 </div>
-
-                            </div>
-
                             
-                        </div>
-                         
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Size</label>
-                                    </div>
-                                    <div class="col-lg-10">
-                                       <input type="text" class="form-control" value="0" />
-                                    </div>
-                                </div>
-
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Color</label>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <select class="form-control">
-                                            <option>Select Color</option>
-                                            <option>White</option>
-                                            <option>Red</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </div>
                         
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Opening Stock</label>
+                            <div class="row"  >
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Unit</label>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <select class="form-control" formControlName="unitId" name="unitId"  [ngClass]="{ 'is-invalid': submitted && f.unitId.errors }">
+                                                <option value="">Select Unit</option>
+                                                <option *ngFor="let unit of units"  value={{unit.id}}>{{unit.value}}</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <input type="text" class="form-control" value="0" />
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Item Type</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <select class="form-control">
+                                                <option>Select Type</option>
+                                                <option>Inventory</option>
+                                                <option>Capital</option>
+                                                <option>Consumable</option>
+                                            </select>
+                                        </div>
                                     </div>
+
                                 </div>
 
+                                
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Tax</label>
+                            
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Size</label>
+                                        </div>
+                                        <div class="col-lg-10">
+                                        <input type="number" class="form-control" formControlName="size" name="size" [ngClass]="{ 'is-invalid': submitted && f.size.errors }" />
+                                        </div>
                                     </div>
-                                    <div class="col-lg-9">
-                                        <select class="form-control">
-                                            <option>Select Tax</option>
-                                            <option>18</option>
-                                            <option>9</option>
-                                        </select>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Color</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <select class="form-control" formControlName="colorId" name="colorId"  [ngClass]="{ 'is-invalid': submitted && f.colorId.errors }">
+                                                <option value="">Select Color</option>
+                                                <option *ngFor="let color of colors"  value={{color.id}}>{{color.value}}</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <h5 style="margin-top: 4px;margin-left: -15px;">%</h5>
-                                    </div>
+
                                 </div>
 
+
                             </div>
-
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Cost</label>
+                            
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Opening Stock</label>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <input type="number" class="form-control" formControlName="openingStock" name="openingStock" [ngClass]="{ 'is-invalid': submitted && f.openingStock.errors }" />
+                                        </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                        <input type="text" class="form-control" value="0"/>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Tax</label>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <select class="form-control" formControlName="taxId" name="taxId"  [ngClass]="{ 'is-invalid': submitted && f.taxId.errors }">
+                                                <option value="">Select Tax</option>
+                                                <option *ngFor="let tax of taxes"  value={{tax.id}}>{{tax.taxName}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <h5 style="margin-top: 4px;margin-left: -15px;">%</h5>
+                                        </div>
                                     </div>
+
                                 </div>
 
+
                             </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Sale Rate</label>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Cost</label>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <input type="number" class="form-control" formControlName="cost" name="cost" [ngClass]="{ 'is-invalid': submitted && f.cost.errors }" />
+                                        </div>
                                     </div>
-                                    <div class="col-lg-12">
-                                        <input type="text" class="form-control" value="0"/>
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Sale Rate</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input type="number" class="form-control" formControlName="saleRate" name="saleRate" [ngClass]="{ 'is-invalid': submitted && f.saleRate.errors }" />
+                                        </div>
                                     </div>
+
                                 </div>
 
-                            </div>
 
-
-                        </div>
-                         
-                         
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="col-form-label">Low Qty Alert</label>
                             </div>
-                            <div class="col-lg-5">
-                                <input type="text" class="form-control" value="0"/>
-                            </div>
-                        </div>
-                        
-                        <div class="row  margin-top">
-                            <div class="col-lg-12">
-                                <div class="custom-control custom-checkbox ">
-                                    <input type="checkbox" class="custom-control-input" id="chkbundledItem">
-                                    <label class="custom-control-label" for="chkbundledItem"> Is Bundled Product</label>
+                            
+                            
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="col-form-label">Low Qty Alert</label>
                                 </div>
-                            </div> 
-                        </div>
+                                <div class="col-lg-5">
+                                    <input type="number" class="form-control" formControlName="lowQtyAlert" name="lowQtyAlert" [ngClass]="{ 'is-invalid': submitted && f.lowQtyAlert.errors }" />
+                                </div>
+                            </div>
+                            
+                            <div class="row  margin-top">
+                                <div class="col-lg-12">
+                                    <div class="custom-control custom-checkbox ">
+                                        <input type="checkbox" class="custom-control-input" id="isBundledProject" formControlName="isBundledProject" name="isBundledProject" [ngClass]="{ 'is-invalid': submitted && f.isBundledProject.errors }">
+                                        <label class="custom-control-label" for="isBundledProject"> Is Bundled Product</label>
+                                    </div>
+                                </div> 
+                            </div>
 
-                        <div class="row margin-top" id="bundledItems">
-                            <div class="col-lg-12" style="overflow-y:auto;max-height:200px">
-                                <table class="table mb-0">
-                                    <thead>
-                                        <tr class="thead-light">
-                                            <th style="width:20%">CODE </th>
-                                            <th style="width:50%"> ITEM NAME </th>
-                                            <th style="width:15%" class="text-center"> QTY </th>
-                                            <th class="text-center"> <a id="btnHideShow" href="#"><i class="font-size-20 text-info fa-plus-square fas "></i></a> </th>
+                            <div class="row margin-top" id="bundledItems">
+                                <div class="col-lg-12" style="overflow-y:auto;max-height:200px">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr class="thead-light">
+                                                <th style="width:20%">CODE </th>
+                                                <th style="width:50%"> ITEM NAME </th>
+                                                <th style="width:15%" class="text-center"> QTY </th>
+                                                <th class="text-center"> <a id="btnHideShow" href="#"><i class="font-size-20 text-info fa-plus-square fas "></i></a> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1022</td>
+                                            <td> 
+                                            <select class="form-control select2">
+                                                <option>Apply</option>
+                                            </select>
+                                            </td>
+                                            <td class="text-center"><input type="text" class="form-control" /></td>
+                                            <td class="text-center"><a href="#"><i class="far fa-window-close   text-danger font-size-18 m-1 "></i></a></td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr>
-                                           <td>1022</td>
-                                           <td> 
-                                           <select class="form-control select2">
-                                               <option>Apply</option>
-                                           </select>
-                                           </td>
-                                           <td class="text-center"><input type="text" class="form-control" /></td>
-                                           <td class="text-center"><a href="#"><i class="far fa-window-close   text-danger font-size-18 m-1 "></i></a></td>
-                                       </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                        </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="col-form-label">Description</label>
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea class="form-control" style="height:50px !important" formControlName="description" name="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" ></textarea>
+                                </div>
+                            </div>.
+
+                            <div class="row"  >
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Image</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <input type="file" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="col-form-label">Status</label>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <select class="form-control" formControlName="status" name="status" >
+                                                <option [value]=true>Active</option>
+                                                <option [value]=false >Deactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="col-form-label">Description</label>
-                            </div>
-                            <div class="col-lg-12">
-                                <textarea class="form-control" style="height:50px !important"></textarea>
-                            </div>
-                        </div>.
-
-                        <div class="row"  >
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Image</label>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <input type="file" class="form-control" />
-                                    </div>
+                            <div class="row" style="margin-bottom:25px"></div>
+                            <div class="row button-items">
+                                <div class="col-lg-12 ">
+                                    <button type="submit" style="float:right;" class="btn w-sm btn-success waves-effect waves-light">
+                                        <i class="bx bx-check-double    align-middle mr-1"></i><b>Save Item</b>
+                                    </button>
+                                    <button type="button" style="float:right;" class="btn w-sm  btn-warning waves-effect waves-light"  (click)="resetForm()">
+                                        <i class="bx bx-revision  align-middle mr-1"></i><b>Reset</b>
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="col-form-label">Status</label>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <select class="form-control">
-                                            <option>Active</option>
-                                            <option>Deactive</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <div class="row" style="margin-bottom:25px"></div>
-                        <div class="row button-items">
-                            <div class="col-lg-12 ">
-                                <button style="float:right;" class="btn w-sm btn-success waves-effect waves-light">
-                                    <i class="bx bx-check-double    align-middle mr-1"></i><b>Save Item</b>
-                                </button>
-                                <button style="float:right;" class="btn w-sm  btn-warning waves-effect waves-light">
-                                    <i class="bx bx-revision  align-middle mr-1"></i><b>Reset</b>
-                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-                
+                </form>
 
             </div>
 
@@ -328,7 +327,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="alert alert-secondary status-padding">
-                            <div class="row" style="">
+                            <div class="row">
                                 <div class="col-lg-8 ">
                                     <button  class="btn btn-info btn-sm  waves-effect waves-light m-1">40</button>
                                 </div>
@@ -370,8 +369,8 @@
                                                 <span *ngIf="!item.status" class="badge badge-pill badge-danger">Deactive</span>
                                             </td>
                                             <td style="text-align:center">
-                                                <a href="#" class="action-icon text-success"> <i class="far fa-edit  font-size-14"></i></a>
-                                                <a href="#" class="action-icon text-danger"> <i class=" bx bxs-trash font-size-14"></i></a>
+                                                <a href="javascript:void(0);" (click)="updateForm(item.id)"  class="action-icon text-success"> <i class="far fa-edit  font-size-14"></i></a>
+                                                <a href="javascript:void(0);" (click)="deleteForm(item.id)"  class="action-icon text-danger"> <i class=" bx bxs-trash font-size-14"></i></a>
                                             </td>
                                         </tr>
                                          
