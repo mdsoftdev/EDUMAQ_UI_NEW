@@ -15,6 +15,7 @@ import { City } from './models/city';
 import { Item } from './models/item';
 import { Unit } from './models/unit';
 import { Color } from './models/color';
+import { ProductBundle } from './models/productBundle';
 
 @Injectable({
   providedIn: 'root'
@@ -294,6 +295,32 @@ getAllUnits(): Observable<Unit[]>{
 
 getAllColors(): Observable<Color[]>{
   return this.httpClient.get<Color[]>(environment.apiUrl + '/colors/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+uploadFile(files) {
+  let fileToUpload = <File>files[0];
+  const formData = new FormData();
+  formData.append('file', fileToUpload, fileToUpload.name);
+  return this.httpClient.post<string>(environment.apiUrl + '/upload/image', formData, {reportProgress: true, observe: 'events'})
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getProductBundlesById(id): Observable<ProductBundle[]>{
+  return this.httpClient.get<ProductBundle[]>(environment.apiUrl + '/productbundles/'+id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+createUpdateProductBundles(bundle): Observable<ProductBundle[]> {
+  console.log("posting bundle:");
+  console.log(JSON.stringify(bundle));
+  return this.httpClient.post<ProductBundle[]>(environment.apiUrl + '/productbundles/bulk', JSON.stringify(bundle), this.httpOptions)
   .pipe(
     catchError(this.errorHandler)
   );

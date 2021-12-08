@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MasterService } from '../master.service';
@@ -9,6 +9,8 @@ import { Unit } from '../models/unit';
 import { Color } from '../models/color';
 import { Tax } from '../models/tax';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { HttpEventType } from '@angular/common/http';
+import { ProductBundle } from '../models/productBundle';
 
 @Component({
   selector: 'app-itemcreation',
@@ -16,6 +18,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
   styleUrls: ['./itemcreation.component.css']
 })
 export class ItemcreationComponent implements OnInit {
+
+  @ViewChild('file') file: ElementRef;
 
   itemcreationForm: FormGroup;
   items: Item[] = [];
@@ -27,7 +31,12 @@ export class ItemcreationComponent implements OnInit {
   taxes: Tax[] = [];
   submitted = false;
   searchText: string;
-  
+  uploadProgress: number;
+  selectedFiles: File[];
+  uploadResponse: {imagePath: ''};
+  isBundledProductChecked: Boolean;
+  productBundles: ProductBundle[] = [{id:0,bundleId:0,itemId:0,code:"",quantity:0, selectedItem:0}];
+
   constructor(public settingsService: MasterService,
     public fb: FormBuilder,
     private toastr: ToastrService) { }
@@ -47,14 +56,14 @@ export class ItemcreationComponent implements OnInit {
       itemCode: ['', Validators.required],
       sku: [''],
       unitId: ['', Validators.required],
-      size: [''],
+      size: [0],
       colorId: [''],
-      openingStock: [''],
+      openingStock: [0],
       taxId: [''],
       cost: [''],
-      saleRate:[''],
-      lowQtyAlert: [''],
-      isBundledProject: [false],
+      saleRate:[0],
+      lowQtyAlert: [0],
+      isBundledProduct: [false],
       description: [''],
       status:[true]
     }, {
@@ -112,19 +121,23 @@ resetForm() {
       itemCode: ['', Validators.required],
       sku: [''],
       unitId: ['', Validators.required],
-      size: [''],
+      size: [0],
       colorId: [''],
-      openingStock: [''],
+      openingStock: [0],
       taxId: [''],
       cost: [''],
-      saleRate:[''],
-      lowQtyAlert: [''],
-      isBundledProject: [false],
+      saleRate:[0],
+      lowQtyAlert: [0],
+      isBundledProduct: [false],
       description: [''],
       status:[true]
-  }, {
-    // validator:  this.validateDate('startDate', 'endDate')
-});
+    }, {
+      // validator:  this.validateDate('startDate', 'endDate')
+  });
+
+  // clear image input
+  this.file.nativeElement.value = "";
+  this.productBundles = [{id:0,bundleId:0,itemId:0,code:"",quantity:0, selectedItem:0}];
 }
 
 submitForm() {
@@ -137,29 +150,68 @@ submitForm() {
     // }
     return;
   }
-  if (this.itemcreationForm.get('id').value === 0) {
+  this.uploadFile(this.createUpdateItem, this);
+}
+
+// createUpdateItem(componentInstance){
+//   if (form.get('id').value === 0) {
     
-      this.settingsService.createItem(this.itemcreationForm.value).subscribe(res => {
-        this.GetItems();
-        this.toastr.success('Records has been sucessfully saved', 'SUCCESS!', {
-          timeOut: 3000
-        });
-        this.resetForm();
-      });
-    
-  } else {
-    this.settingsService.updateItem(this.itemcreationForm.get('id').value, this.itemcreationForm.value).subscribe(res => {
-      this.GetItems();
-      this.toastr.success('Records has been sucessfully updated', 'SUCCESS!', {
-        timeOut: 3000
-      });
-      this.resetForm();
-    });
+//     this.settingsService.createItem(form.value).subscribe(res => {
+//       this.GetItems();
+//       this.toastr.success('Records has been sucessfully saved', 'SUCCESS!', {
+//         timeOut: 3000
+//       });
+//       this.resetForm();
+//     });
+  
+// } else {
+//   this.settingsService.updateItem(form.get('id').value, form.value).subscribe(res => {
+//     this.GetItems();
+//     this.toastr.success('Records has been sucessfully updated', 'SUCCESS!', {
+//       timeOut: 3000
+//     });
+//     this.resetForm();
+//   });
+// }
+// }
+
+createUpdateItem(componentInstance){
+  let formData = componentInstance.itemcreationForm.value;
+  if(componentInstance.uploadResponse && componentInstance.uploadResponse.imagePath){
+    formData['image'] = componentInstance.uploadResponse.imagePath;
   }
+  const { isBundledProduct } = componentInstance.itemcreationForm.value;
+  if (componentInstance.itemcreationForm.get('id').value === 0) {
+    
+    componentInstance.settingsService.createItem(formData).subscribe(res => {
+      if(isBundledProduct){
+        componentInstance.settingsService.createUpdateProductBundles(componentInstance.productBundles).subscribe(res => {
+          componentInstance.resetViewData(componentInstance,'Records has been sucessfully updated')
+        });
+      } else {
+        componentInstance.resetViewData(componentInstance,'Records has been sucessfully updated')
+      }
+    });
+} else {
+  componentInstance.settingsService.updateItem(componentInstance.itemcreationForm.get('id').value, formData).subscribe(res => {
+    if(isBundledProduct){
+      componentInstance.settingsService.createUpdateProductBundles(componentInstance.productBundles).subscribe(res => {
+        componentInstance.resetViewData(componentInstance,'Records has been sucessfully updated')
+      });
+    } else {
+      componentInstance.resetViewData(componentInstance,'Records has been sucessfully updated')
+    }
+  });
+}
 }
 
 updateForm(id: number) {
   this.settingsService.getItemById(id).subscribe((data: Item) => {
+    if(data && data.isBundledProduct){
+      this.settingsService.getProductBundlesById(id).subscribe((bundle: ProductBundle[]) =>{
+        this.productBundles = bundle;
+      })
+    }
     this.itemcreationForm = this.fb.group({
       itemGroupId:[data.itemGroupId,Validators.required],
       itemCategoryId: [data.itemCategoryId,Validators.required],
@@ -175,7 +227,7 @@ updateForm(id: number) {
       cost: [data.cost],
       saleRate:[data.saleRate],
       lowQtyAlert: [data.lowQtyAlert],
-      isBundledProject: [data.isBundledProject],
+      isBundledProduct: [data.isBundledProduct],
       description: [data.description],
       status:[data.status]
     }, {
@@ -211,6 +263,76 @@ deleteForm(id: number) {
     );
     }
   });
+}
+
+public setUploadFile = (files) => {
+  if (files.length === 0) {
+    return;
+  }
+  this.selectedFiles = files;
+}
+
+public setImagePath = (event) => {
+  this.uploadResponse = event;
+}
+
+public uploadFile = (callback, data) => {
+  if (!this.selectedFiles || this.selectedFiles.length === 0) {
+    if(callback){
+      callback(data);
+    }
+    return;
+  }
+  this.settingsService.uploadFile(this.selectedFiles)
+    .subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress)
+        this.uploadProgress = Math.round(100 * event.loaded / event.total);
+      else if (event.type === HttpEventType.Response) {
+        this.setImagePath(event.body);        
+      }
+    },
+    (err) => {
+      console.log('err file upload');
+    },
+    () => {
+      console.log('calling item creation');
+      if(callback){
+        callback(data);
+      }
+    });
+}
+
+resetViewData(componentInstance, message){
+  componentInstance.GetItems();
+      componentInstance.toastr.success(message, 'SUCCESS!', {
+        timeOut: 3000
+      });
+      componentInstance.resetForm();
+}
+
+searchItems(searchString){
+  this.itemFilteredList = this.items.filter(x =>
+    x.itemName.toLowerCase().indexOf(searchString.trim().toLowerCase()) !== -1 || 
+    x.sku.toLowerCase().indexOf(searchString.trim().toLowerCase()) !== -1)
+}
+
+// bundled items
+addNewBundleItem(){
+  this.productBundles.push({id:0,bundleId:0,itemId:0,code:"",quantity:0,selectedItem:0});
+}
+
+removeNewBundleItem(index){
+  if (index > -1) {
+    this.productBundles.splice(index, 1);
+  }
+}
+
+onBundledItemSelect(index){
+  let parentScope = this;
+  const { id } = this.itemcreationForm.value;
+  const selectedbdItem = this.items.filter(function (itm) { return itm.id == parentScope.productBundles[index].itemId });
+  this.productBundles[index].bundleId =  id;
+  this.productBundles[index].code =  selectedbdItem[0].itemCode;
 }
 
 }

@@ -8,7 +8,7 @@ export interface Item {
     itemCode : string;
     sku : string;
     unitId : number;
-    itemTypeId : number;
+    itemType : string;
     size : number;
     colorId : number;
     openingStock : number;
@@ -16,7 +16,7 @@ export interface Item {
     cost : number;
     saleRate : number;
     lowQtyAlert : number;
-    isBundledProject : boolean;
+    isBundledProduct : boolean;
     description : string;
     image : string;
 }
