@@ -180,12 +180,12 @@ createUpdateItem(componentInstance){
   if(componentInstance.uploadResponse && componentInstance.uploadResponse.imagePath){
     formData['image'] = componentInstance.uploadResponse.imagePath;
   }
-  const { isBundledProduct } = componentInstance.itemcreationForm.value;
+  const { id, isBundledProduct } = componentInstance.itemcreationForm.value;
   if (componentInstance.itemcreationForm.get('id').value === 0) {
     
     componentInstance.settingsService.createItem(formData).subscribe(res => {
       if(isBundledProduct){
-        componentInstance.settingsService.createUpdateProductBundles(componentInstance.productBundles).subscribe(res => {
+        componentInstance.settingsService.createUpdateProductBundles(id,componentInstance.productBundles).subscribe(res => {
           componentInstance.resetViewData(componentInstance,'Records has been sucessfully updated')
         });
       } else {
@@ -195,7 +195,7 @@ createUpdateItem(componentInstance){
 } else {
   componentInstance.settingsService.updateItem(componentInstance.itemcreationForm.get('id').value, formData).subscribe(res => {
     if(isBundledProduct){
-      componentInstance.settingsService.createUpdateProductBundles(componentInstance.productBundles).subscribe(res => {
+      componentInstance.settingsService.createUpdateProductBundles(id,componentInstance.productBundles).subscribe(res => {
         componentInstance.resetViewData(componentInstance,'Records has been sucessfully updated')
       });
     } else {

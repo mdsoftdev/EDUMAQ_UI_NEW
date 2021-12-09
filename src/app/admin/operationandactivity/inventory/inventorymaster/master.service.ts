@@ -317,10 +317,10 @@ getProductBundlesById(id): Observable<ProductBundle[]>{
   );
 }
 
-createUpdateProductBundles(bundle): Observable<ProductBundle[]> {
+createUpdateProductBundles(id, bundle): Observable<ProductBundle[]> {
   console.log("posting bundle:");
   console.log(JSON.stringify(bundle));
-  return this.httpClient.post<ProductBundle[]>(environment.apiUrl + '/productbundles/bulk', JSON.stringify(bundle), this.httpOptions)
+  return this.httpClient.post<ProductBundle[]>(environment.apiUrl + '/productbundles/bulk/' + id, JSON.stringify(bundle), this.httpOptions)
   .pipe(
     catchError(this.errorHandler)
   );
