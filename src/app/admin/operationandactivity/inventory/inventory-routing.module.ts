@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InventoryComponent } from './inventory/inventory.component';
+import { PurchaseorderComponent } from './purchaseorder/purchaseorder.component';
 
 const routes: Routes = [
   {path: '',
     children: [
       {path: '',  component: InventoryComponent},
+      {path: 'purchaseorder', component: PurchaseorderComponent},
       {path: 'inventorymaster', loadChildren: () => import('./inventorymaster/inventorymaster.module').then(m => m.InventorymasterModule)}
     ]
   }

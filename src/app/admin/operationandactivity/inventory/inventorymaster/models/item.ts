@@ -19,4 +19,5 @@ export interface Item {
     isBundledProduct : boolean;
     description : string;
     image : string;
+    customName: string;
 }

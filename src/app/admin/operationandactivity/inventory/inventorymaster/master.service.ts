@@ -16,6 +16,7 @@ import { Item } from './models/item';
 import { Unit } from './models/unit';
 import { Color } from './models/color';
 import { ProductBundle } from './models/productBundle';
+import { PurchaseOrder } from './models/purchaseOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -318,9 +319,59 @@ getProductBundlesById(id): Observable<ProductBundle[]>{
 }
 
 createUpdateProductBundles(id, bundle): Observable<ProductBundle[]> {
-  console.log("posting bundle:");
   console.log(JSON.stringify(bundle));
   return this.httpClient.post<ProductBundle[]>(environment.apiUrl + '/productbundles/bulk/' + id, JSON.stringify(bundle), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getAllPurchaseOrders(): Observable<PurchaseOrder[]>{
+  return this.httpClient.get<PurchaseOrder[]>(environment.apiUrl + '/purchaseOrders/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getPOQuotNoAndPoNo(): Observable<number>{
+  return this.httpClient.get<number>(environment.apiUrl + '/purchaseOrders/quotandpo/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getPurchaseOrderById(id): Observable<PurchaseOrder> {
+  return this.httpClient.get<PurchaseOrder>(environment.apiUrl + '/purchaseOrders/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+createPurchaseOrder(purchaseOrder): Observable<PurchaseOrder> {
+  return this.httpClient.post<PurchaseOrder>(environment.apiUrl + '/purchaseOrders/', JSON.stringify(purchaseOrder), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+updatePurchaseOrder(id, purchaseOrder): Observable<PurchaseOrder> {
+  // tslint:disable-next-line:max-line-length
+  return this.httpClient.put<PurchaseOrder>(environment.apiUrl + '/purchaseOrders/' + id, JSON.stringify(purchaseOrder), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+deletePurchaseOrder(id) {
+  return this.httpClient.delete<PurchaseOrder>(environment.apiUrl + '/purchaseOrders/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+createUpdatePurchaseOrderItems(id, bundle): Observable<ProductBundle[]> {
+  console.log(JSON.stringify(bundle));
+  return this.httpClient.post<ProductBundle[]>(environment.apiUrl + '/purchaseOrderItems/bulk/' + id, JSON.stringify(bundle), this.httpOptions)
   .pipe(
     catchError(this.errorHandler)
   );

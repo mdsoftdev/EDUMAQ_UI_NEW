@@ -1,0 +1,280 @@
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-lg-12 page-col-nopadding">
+                <div class="card page-header-title card-title text-uppercase">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4"><span class="pagetitle"><i class="fas fa-shopping-cart  text-success font-size-18"></i>&nbsp; Purchase Order (PO)</span></div>
+                            
+                            <div class="col-lg-8  ">
+                                <div style="float:right !important">
+                                    <button  class="btn w-sm btn-info btn-top-action">
+                                        <i class="fas fa-list  align-middle mr-1"></i><b>PO List</b>
+                                    </button>
+                                    <button   class="btn btn-secondary dropdown-toggle btn-option" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                       MORE OPTIONS<i class="mdi mdi-chevron-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" style="position: absolute; transform: translate3d(-1px, 37px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
+                                        <a class="dropdown-item" href="#" data-target="#addLeave" data-toggle="modal">Create New Leave</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        
+        <div class="row">
+            <form [formGroup]="purchaseOrderForm" (ngSubmit)="submitForm()" class="needs-validation" novalidate>
+            <div class="col-lg-12 page-col-nopadding">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            
+                            <div class="col-lg-3">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label">Supplier Name</label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <!-- <input type="text" class="form-control font-size-16"  placeholder="Classmate Pvt Ltd. (Auto Complete Search)" /> -->
+                                        <ng-autocomplete form-control font-size-16
+                                        [data]="suppliersFilteredList"
+                                        [searchKeyword]="supplierSearchKeyword"
+                                        (selected)='selectEvent($event)'
+                                        (inputCleared)='inputCleared($event)'
+                                        [itemTemplate]="itemTemplate"
+                                        [notFoundTemplate]="notFoundTemplate"
+                                        [placeholder]='"Search Supplier"'
+                                        [(ngModel)]="supplierPlaceholder" [ngModelOptions]="{standalone: true}">                                 
+                                        </ng-autocomplete>
+                                        <ng-template #itemTemplate let-item>
+                                            <a [innerHTML]="item.supplierName"></a>
+                                        </ng-template>
+                                            
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label"> Quotation No </label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <input type="text" class="form-control font-size-16" readonly placeholder="5254"
+                                        formControlName="quotationNo" name="quotationNo" [ngClass]="{ 'is-invalid': submitted && f.quotationNo.errors }" />
+                                    </div>
+                                   
+                                </div>
+                            </div> 
+                            <div class="col-lg-2">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="col-form-label"> Quotation Date </label>
+                                    </div>
+                                    
+                                    <div class="col-lg-12">
+                                        <input type="text" class="form-control font-size-16" placeholder="dd-mm-yyyy" 
+                                        data-provide="datepicker" data-date-autoclose="true"
+                                        id="quotationDate" formControlName="quotationDate" name="quotationDate"
+                                        [ngClass]="{ 'is-invalid': submitted && f.quotationDate.errors }">
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-1"></div>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="col-form-label"> PO No </label>
+                                            </div>
+                                            <div class="col-lg-12 ">
+                                                <input type="text" class="form-control font-size-16" readonly placeholder="5254" 
+                                                formControlName="purchaseOrderNumber" name="purchaseOrderNumber"
+                                                [ngClass]="{ 'is-invalid': submitted && f.purchaseOrderNumber.errors }"/>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <label class="col-form-label"> PO Date </label>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <input type="text" class="form-control font-size-16" placeholder="dd-mm-yyyy" 
+                                                data-provide="datepicker" data-date-autoclose="true"
+                                                id="purchaseOrderDate" formControlName="purchaseOrderDate" name="purchaseOrderDate"
+                                                [ngClass]="{ 'is-invalid': submitted && f.purchaseOrderDate.errors }"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <!--When select Supplier and display the supplier details-->
+                                <table class="font-size-14 table table-borderless" id="tblSupplierDetails" [hidden]="!isSupplierSelected">
+                                    <tbody>
+                                        <tr>
+                                            <td>SUPPLIER NAME</td>
+                                            <td class="text-danger">{{selectedSupplier.supplierName}}</td>
+                                            <td>SUPPLIER CODE</td>
+                                            <td class="text-danger">{{selectedSupplier.code}}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>MOBILE NO</td>
+
+                                            <td class="text-danger">{{selectedSupplier.contactNo}}</td>
+                                            <td>EMAIL ID</td>
+                                            <td class="text-danger">{{selectedSupplier.email}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ADDRESS</td>
+                                        <td class="text-danger" colspan="3">{{selectedSupplier.address}}</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                         
+                        <div class="row margin-top">
+                            <div class="col-lg-12 table-responsive">
+                                <table class="table table-striped mb-0 table-centered">
+                                    <thead>
+                                        <tr class="thead-light">
+                                            <th style="width:25%">ITEM NAME</th>
+                                            <th style="width:10%">ITEM CODE</th>
+                                            <th style="width:10%"  >QUANTITY</th>  
+                                            <th style="width:8%"  >UNIT RATE</th>
+                                            <th style="width:10%">DISCOUNT</th> 
+                                            <th style="width:8%" >TAX(%)</th> 
+                                            <th style="width:10%" class="text-center"  >TOTAL</th>
+                                            <th style="width:15%" class="text-center"> <button type="button"
+                                                class="btn btn-sm btn-success " (click)="addNewPurchaseOrdertem()">
+                                                <i class="fas fa-plus-square font-size-14 align-middle mr-2"> </i>Add New Item</button> </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let poItem of purchaseOrderItems; let i = index">
+                                            <td>
+                                                <select class="form-control select2" (change)="onPurchaseOrderItemsSelect(i)" [(ngModel)]="purchaseOrderItems[i].itemId" [ngModelOptions]="{standalone: true}">
+                                                    <option>Select Item</option>
+                                                    <option *ngFor="let item of items"  value={{item.id}}>{{item.customName}}</option>
+                                                </select>
+                                            </td> 
+                                            <td><input type="text" class="form-control" [ngModel]="poItem.itemCode" [ngModelOptions]="{standalone: true}" readonly/></td>
+                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.quantity" (change)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
+                                            <td  ><input type="text" class="form-control" [(ngModel)]="poItem.rate" (change)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
+                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.discount" (change)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
+                                            <td  >
+                                               <input type="text" class="form-control " [ngModel]="poItem.tax" [ngModelOptions]="{standalone: true}" readonly/>
+
+                                            </td>
+                                            <td class="text-center"><b>{{poItem.total}}</b></td>
+                                            <td class="text-center"><button type="button" (click)="removePurchaseOrderItems(i)" style="border: none; padding: 0; background: none;">
+                                                <i class=" far fa-times-circle    text-danger font-size-20 m-1 "></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="row margin-top" >
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <textarea class="form-control" style="height:60px !important" placeholder="REMARKS"
+                                        formControlName="remark" name="remark" [ngClass]="{ 'is-invalid': submitted && f.remark.errors }"></textarea>
+                                    </div>
+                                    <div class="col-lg-12 margin-top">
+                                        <textarea class="form-control" style="height:60px !important" placeholder="INTERNAL NOTE"
+                                        formControlName="internalNote" name="internalNote" [ngClass]="{ 'is-invalid': submitted && f.internalNote.errors }"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <table class=" table table-borderless"  >
+                                    <tr>
+                                        <td style="width:60%"><h5>SUB TOTAL</h5></td>
+                                        <td style="width:5%"><h5>:</h5></td>
+                                        <td style="width:35%"class="text-sm-right"><h5>{{totalBill.subTotal}}</h5></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h5>DISCOUNT</h5></td>
+                                        <td><h5>:</h5></td>
+                                        <td class="text-sm-right"><h5>{{totalBill.discount}}</h5></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h5>TAX(GST)</h5></td>
+                                        <td><h5>:</h5></td>
+                                        <td class="text-sm-right"><h5>{{totalBill.tax}}</h5></td>
+                                    </tr>
+                                    
+                                    <tr class="table-danger">
+                                        <td><h4>TOTAL PAYABLE</h4></td>
+                                        <td><h4>:</h4></td>
+                                        <td class="text-sm-right"><h4>{{totalBill.totalPayable}}</h4></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="row ">
+                            <div class="col-lg-12 ">
+                                <div style="float:right">
+                                  
+                                    <button type="button" class="btn w-sm  btn-warning waves-effect waves-light" (click)="resetForm()">
+                                        <i class="bx bx-revision  align-middle mr-1 font-size-18"></i><b>Reset</b>
+                                    </button>
+
+                                    <button type="submit" class="btn w-sm btn-success waves-effect waves-light" >
+                                        <i class="bx bx-check-double    align-middle mr-1 font-size-18"></i><b> Save PO</b>
+                                    </button>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+               
+            </div>
+            </form>
+        </div>
+
+
+
+
+
+    </div>
+    <!-- container-fluid -->
+</div>

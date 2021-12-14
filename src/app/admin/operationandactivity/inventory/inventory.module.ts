@@ -1,17 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 import { InventoryRoutingModule } from './inventory-routing.module';
 import { InventoryComponent } from './inventory/inventory.component';
 import { InventorymasterModule } from './inventorymaster/inventorymaster.module';
+import { PurchaseorderComponent } from './purchaseorder/purchaseorder.component';
 
 
 @NgModule({
-  declarations: [InventoryComponent],
+  declarations: [InventoryComponent, PurchaseorderComponent],
   imports: [
     CommonModule,
     InventoryRoutingModule,
-    InventorymasterModule
+    InventorymasterModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AutocompleteLibModule
   ]
 })
 export class InventoryModule { }
