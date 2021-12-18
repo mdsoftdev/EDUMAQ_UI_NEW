@@ -1,17 +1,18 @@
-export interface PurchaseOrder {
+export interface GrnPurchase {
     id : number;
     branchId : number;
     status : boolean;
     supplierId : number;
-    quotationNo : number;
-    quotationDate : string;
-    purchaseOrderNumber : number;
-    purchaseOrderDate : string;
+    poNumber : number;
+    supplierInvoiceNo : number;
+    invoiceDate : string;
+    grnNumber : number;
+    grnDate: string;
     remark : string;
     internalNote: string;
     subTotal : number;
     discount : number;
     tax : number;
+    additionalCharges : number;
     totalPayable : number;
-    displayName: string;
 }

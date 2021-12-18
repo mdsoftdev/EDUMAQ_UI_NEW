@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MasterService } from '../inventorymaster/master.service';
+import { Color } from '../inventorymaster/models/color';
 import { Item } from '../inventorymaster/models/item';
 import { PurchaseOrder } from '../inventorymaster/models/purchaseOrder';
 import { PurchaseOrderItem } from '../inventorymaster/models/purchaseOrderItem';
@@ -21,7 +22,7 @@ export class PurchaseorderComponent implements OnInit {
   purchaseOrders: PurchaseOrder[] = [];
   purchaseOrdersFilteredList: PurchaseOrder[] = [];
   items: Item[] = [];
-  purchaseOrderItems: PurchaseOrderItem[] = [{id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null,}];
+  purchaseOrderItems: PurchaseOrderItem[] = [{id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null}];
   submitted = false;
   
   suppliers: Supplier[] = [];
@@ -31,6 +32,7 @@ export class PurchaseorderComponent implements OnInit {
   selectedSupplier: any = {};
   supplierPlaceholder: any;
   totalBill: any = {};
+  colors: Color[];
   
   constructor(public settingsService: MasterService,
     public fb: FormBuilder,
@@ -39,8 +41,8 @@ export class PurchaseorderComponent implements OnInit {
   get f() { return this.purchaseOrderForm.controls; }
   ngOnInit(): void {
     this.getPOQuotNoAndPoNo();
-    this.GetItems();
     this.GetSuppliers();
+    this.GetColors(this, this.GetItems);
 
     $('#quotationDate').datepicker().on('changeDate', (e) => {
       // var dateParts = this.formatDate(e.date).split('-');
@@ -179,15 +181,23 @@ export class PurchaseorderComponent implements OnInit {
   }
 
   // items start
-  GetItems() {
-    this.settingsService.getAllItems().subscribe((data: Item[]) => {
-      this.items = this.generateItemName(data);
+  GetItems(instance) {
+    instance.settingsService.getAllItems().subscribe((data: Item[]) => {
+      instance.items = instance.generateItemName(data);
+    });
+  }
+
+  GetColors(instance, callback) {
+    this.settingsService.getAllColors().subscribe((data: Color[]) => {
+      callback(instance);
+      this.colors = data;
     });
   }
 
   generateItemName(itemList:Item[]){
     for (var index in itemList) {
-      itemList[index].customName = itemList[index].itemName + '_' + itemList[index].size + '_' + itemList[index].colorId; 
+      let color = this.colors.find(c => c.id === itemList[index].colorId);
+      itemList[index].customName = itemList[index].itemName + '_' + itemList[index].size + '_' + color.value; 
     }
 
     return itemList;
@@ -200,6 +210,7 @@ export class PurchaseorderComponent implements OnInit {
     this.purchaseOrderItems[index].purchaseOrderId =  id;
     this.purchaseOrderItems[index].itemId =  selectedbdItem[0].id;
     this.purchaseOrderItems[index].itemCode =  selectedbdItem[0].itemCode;
+    this.purchaseOrderItems[index].rate =  selectedbdItem[0].saleRate;
   }
 
   calculateItemTotal(poItemIndex){
@@ -261,6 +272,9 @@ export class PurchaseorderComponent implements OnInit {
 
   private formatDate(date) {
     const d = new Date(date);
+    if(isNaN(d.getTime())){
+      return date;
+    }
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
     const year = d.getFullYear();
@@ -287,7 +301,7 @@ export class PurchaseorderComponent implements OnInit {
   }
 
   private resetViewData(componentInstance, message){
-    componentInstance.GetItems();
+    componentInstance.GetItems(componentInstance);
         componentInstance.toastr.success(message, 'SUCCESS!', {
           timeOut: 3000
         });

@@ -17,6 +17,8 @@ import { Unit } from './models/unit';
 import { Color } from './models/color';
 import { ProductBundle } from './models/productBundle';
 import { PurchaseOrder } from './models/purchaseOrder';
+import { GrnPurchase } from './models/grnPurchase';
+import { PurchaseOrderItem } from './models/purchaseOrderItem';
 
 @Injectable({
   providedIn: 'root'
@@ -347,6 +349,20 @@ getPurchaseOrderById(id): Observable<PurchaseOrder> {
   );
 }
 
+getPurchaseOrderItemsById(purchaseOrderId): Observable<PurchaseOrderItem[]> {
+  return this.httpClient.get<PurchaseOrderItem[]>(environment.apiUrl + '/purchaseOrderItems/' + purchaseOrderId)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getNonCopletePO(supplierId = 0): Observable<PurchaseOrder[]> {
+  return this.httpClient.get<PurchaseOrder[]>(environment.apiUrl + '/purchaseOrders/noncomplete/' + supplierId)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
 createPurchaseOrder(purchaseOrder): Observable<PurchaseOrder> {
   return this.httpClient.post<PurchaseOrder>(environment.apiUrl + '/purchaseOrders/', JSON.stringify(purchaseOrder), this.httpOptions)
   .pipe(
@@ -376,6 +392,60 @@ createUpdatePurchaseOrderItems(id, bundle): Observable<ProductBundle[]> {
     catchError(this.errorHandler)
   );
 }
+
+// grn start
+getAllGrnPurchases(): Observable<GrnPurchase[]>{
+  return this.httpClient.get<GrnPurchase[]>(environment.apiUrl + '/grnPurchases/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getGrnNo(): Observable<number>{
+  return this.httpClient.get<number>(environment.apiUrl + '/grnPurchases/grnno/')
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+getGrnPurchaseById(id): Observable<GrnPurchase> {
+  return this.httpClient.get<GrnPurchase>(environment.apiUrl + '/grnPurchases/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+createGrnPurchase(grnPurchase): Observable<GrnPurchase> {
+  return this.httpClient.post<GrnPurchase>(environment.apiUrl + '/grnPurchases/', JSON.stringify(grnPurchase), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+updateGrnPurchase(id, grnPurchase): Observable<GrnPurchase> {
+  // tslint:disable-next-line:max-line-length
+  return this.httpClient.put<GrnPurchase>(environment.apiUrl + '/grnPurchases/' + id, JSON.stringify(grnPurchase), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+deleteGrnPurchase(id) {
+  return this.httpClient.delete<GrnPurchase>(environment.apiUrl + '/grnPurchases/' + id)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+createUpdateGrnPurchaseItems(id, bundle): Observable<ProductBundle[]> {
+  console.log(JSON.stringify(bundle));
+  return this.httpClient.post<ProductBundle[]>(environment.apiUrl + '/grnPurchaseItems/bulk/' + id, JSON.stringify(bundle), this.httpOptions)
+  .pipe(
+    catchError(this.errorHandler)
+  );
+}
+
+// grn end
 
 errorHandler(error) {
       let errorMessage = '';

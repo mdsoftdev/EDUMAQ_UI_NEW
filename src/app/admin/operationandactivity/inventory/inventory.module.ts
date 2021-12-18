@@ -8,10 +8,11 @@ import { InventoryRoutingModule } from './inventory-routing.module';
 import { InventoryComponent } from './inventory/inventory.component';
 import { InventorymasterModule } from './inventorymaster/inventorymaster.module';
 import { PurchaseorderComponent } from './purchaseorder/purchaseorder.component';
+import { GrnPurchaseComponent } from './grnpurchase/grnpurchase.component';
 
 
 @NgModule({
-  declarations: [InventoryComponent, PurchaseorderComponent],
+  declarations: [InventoryComponent, PurchaseorderComponent, GrnPurchaseComponent],
   imports: [
     CommonModule,
     InventoryRoutingModule,

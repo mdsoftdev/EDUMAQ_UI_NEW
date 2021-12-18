@@ -1,5 +1,5 @@
 export interface Color {
     id: number;
-    Value: string;
-    Description: number;
+    value: string;
+    description: number;
 }
