@@ -7,6 +7,7 @@ import { Item } from '../inventorymaster/models/item';
 import { PurchaseOrder } from '../inventorymaster/models/purchaseOrder';
 import { PurchaseOrderItem } from '../inventorymaster/models/purchaseOrderItem';
 import { Supplier } from '../inventorymaster/models/supplier';
+import { Tax } from '../inventorymaster/models/tax';
 declare var $: any;
 
 @Component({
@@ -22,7 +23,7 @@ export class PurchaseorderComponent implements OnInit {
   purchaseOrders: PurchaseOrder[] = [];
   purchaseOrdersFilteredList: PurchaseOrder[] = [];
   items: Item[] = [];
-  purchaseOrderItems: PurchaseOrderItem[] = [{id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null}];
+  purchaseOrderItems: PurchaseOrderItem[] = [{id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:0,total:null, taxAmount: 0}];
   submitted = false;
   
   suppliers: Supplier[] = [];
@@ -33,6 +34,7 @@ export class PurchaseorderComponent implements OnInit {
   supplierPlaceholder: any;
   totalBill: any = {};
   colors: Color[];
+  taxes: Tax[];
   
   constructor(public settingsService: MasterService,
     public fb: FormBuilder,
@@ -43,6 +45,7 @@ export class PurchaseorderComponent implements OnInit {
     this.getPOQuotNoAndPoNo();
     this.GetSuppliers();
     this.GetColors(this, this.GetItems);
+    this.getTaxes();
 
     $('#quotationDate').datepicker().on('changeDate', (e) => {
       // var dateParts = this.formatDate(e.date).split('-');
@@ -102,7 +105,7 @@ export class PurchaseorderComponent implements OnInit {
     $('#purchaseOrderDate').datepicker('update', this.formatDate(new Date()));
 
     // reset order item
-    this.purchaseOrderItems = [{id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null,}];
+    this.purchaseOrderItems = [{id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:0,total:null, taxAmount: 0}];
 
     // reset total payable
     this.totalBill = {};
@@ -180,6 +183,12 @@ export class PurchaseorderComponent implements OnInit {
     });
   }
 
+  getTaxes() {
+    this.settingsService.getAllTax().subscribe((data: Tax[]) => {
+      this.taxes = data;
+    });
+  }
+
   // items start
   GetItems(instance) {
     instance.settingsService.getAllItems().subscribe((data: Item[]) => {
@@ -207,10 +216,12 @@ export class PurchaseorderComponent implements OnInit {
     let parentScope = this;
     const { id } = this.purchaseOrderForm.value;
     const selectedbdItem = this.items.filter(function (itm) { return itm.id == parentScope.purchaseOrderItems[index].itemId });
+    const tax = this.taxes.find(c => c.id == selectedbdItem[0].taxId);
     this.purchaseOrderItems[index].purchaseOrderId =  id;
     this.purchaseOrderItems[index].itemId =  selectedbdItem[0].id;
     this.purchaseOrderItems[index].itemCode =  selectedbdItem[0].itemCode;
     this.purchaseOrderItems[index].rate =  selectedbdItem[0].saleRate;
+    this.purchaseOrderItems[index].tax = tax.rate;
   }
 
   calculateItemTotal(poItemIndex){
@@ -218,12 +229,13 @@ export class PurchaseorderComponent implements OnInit {
     let sumAfterDiscount = sum - this.purchaseOrderItems[poItemIndex].discount;
     let tax = (sumAfterDiscount * this.purchaseOrderItems[poItemIndex].tax)/100;
     this.purchaseOrderItems[poItemIndex].total = sumAfterDiscount + tax;
+    this.purchaseOrderItems[poItemIndex].taxAmount = tax;
 
     this.generateTotalBill();
   }
 
   addNewPurchaseOrdertem(){
-    this.purchaseOrderItems.push({id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null,});
+    this.purchaseOrderItems.push({id:0,purchaseOrderId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:0,total:null, taxAmount: 0});
   }
   
   removePurchaseOrderItems(index){
@@ -291,10 +303,11 @@ export class PurchaseorderComponent implements OnInit {
     this.purchaseOrderItems.forEach(a => {
       compInstance.totalBill.subTotal += (a.quantity * a.rate);
       compInstance.totalBill.discount += a.discount;
+      compInstance.totalBill.tax += a.taxAmount;
     });
 
     let payableAmount = this.totalBill.subTotal - this.totalBill.discount;
-    this.totalBill.tax = (payableAmount * this.defaultTax )/100;
+    // this.totalBill.tax = (payableAmount * this.defaultTax )/100;
     this.totalBill.tax = this.totalBill.tax.toFixed(2)
     this.totalBill.totalPayable = payableAmount + parseFloat(this.totalBill.tax);
     this.totalBill.totalPayable = this.totalBill.totalPayable.toFixed(2)

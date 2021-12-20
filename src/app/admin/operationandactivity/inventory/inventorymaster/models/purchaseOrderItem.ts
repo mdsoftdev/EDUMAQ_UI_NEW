@@ -9,4 +9,5 @@ export interface PurchaseOrderItem {
     discount: number;
     tax: number;
     total: number;
+    taxAmount: number;
 }

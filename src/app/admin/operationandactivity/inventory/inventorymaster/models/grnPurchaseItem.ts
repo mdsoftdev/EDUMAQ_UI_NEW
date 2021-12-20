@@ -9,4 +9,5 @@ export interface GrnPurchaseItem {
     discount: number;
     tax: number;
     total: number;
+    taxAmount: number;
 }

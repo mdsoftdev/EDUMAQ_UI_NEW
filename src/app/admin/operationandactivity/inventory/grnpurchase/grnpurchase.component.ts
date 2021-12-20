@@ -9,6 +9,7 @@ import { Supplier } from '../inventorymaster/models/supplier';
 import { PurchaseOrder } from '../inventorymaster/models/purchaseOrder';
 import { Color } from '../inventorymaster/models/color';
 import { PurchaseOrderItem } from '../inventorymaster/models/purchaseOrderItem';
+import { Tax } from '../inventorymaster/models/tax';
 declare var $: any;
 
 @Component({
@@ -26,7 +27,7 @@ export class GrnPurchaseComponent implements OnInit {
   purchaseOrders: PurchaseOrder[] = [];
   purchaseOrdersFilteredList: PurchaseOrder[] = [];
   items: Item[] = [];
-  grnPurchaseItems: GrnPurchaseItem[] = [{id:0,grnPurchaseId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null,}];
+  grnPurchaseItems: GrnPurchaseItem[] = [{id:0,grnPurchaseId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null, taxAmount: 0}];
   submitted = false;
   
   suppliers: Supplier[] = [];
@@ -38,6 +39,7 @@ export class GrnPurchaseComponent implements OnInit {
   totalBill: any = {};
   selectedPO: any;
   colors: Color[];
+  taxes: Tax[];
   
   constructor(public settingsService: MasterService,
     public fb: FormBuilder,
@@ -49,6 +51,7 @@ export class GrnPurchaseComponent implements OnInit {
     this.GetSuppliers();
     this.getNonCopletePO(0);
     this.GetColors(this, this.GetItems);
+    this.getTaxes();
 
     $('#invoiceDate').datepicker().on('changeDate', (e) => {
       // var dateParts = this.formatDate(e.date).split('-');
@@ -100,6 +103,7 @@ export class GrnPurchaseComponent implements OnInit {
 
     //
     this.getGrnNo();
+    this.getNonCopletePO();
     // reset supplier
     this.selectedSupplier = {};
     this.isSupplierSelected = false;
@@ -110,7 +114,7 @@ export class GrnPurchaseComponent implements OnInit {
     $('#grnDate').datepicker('update', this.formatDate(new Date()));
 
     // reset order item
-    this.grnPurchaseItems = [{id:0,grnPurchaseId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null,}];
+    this.grnPurchaseItems = [{id:0,grnPurchaseId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null, taxAmount: 0}];
 
     // reset total payable
     this.totalBill = {};
@@ -140,6 +144,7 @@ export class GrnPurchaseComponent implements OnInit {
     grnPurchase.totalPayable = this.totalBill.totalPayable;
     grnPurchase.grnDate = this.formatDate(grnPurchase.grnDate);
     grnPurchase.invoiceDate = this.formatDate(grnPurchase.invoiceDate);
+    grnPurchase.poNumber = this.selectedPO;
 
 
     if (id === 0) {
@@ -190,6 +195,12 @@ export class GrnPurchaseComponent implements OnInit {
     });
   }
 
+  getTaxes() {
+    this.settingsService.getAllTax().subscribe((data: Tax[]) => {
+      this.taxes = data;
+    });
+  }
+
   // items start
   GetItems(instance) {
     instance.settingsService.getAllItems().subscribe((data: Item[]) => {
@@ -210,10 +221,12 @@ export class GrnPurchaseComponent implements OnInit {
     let parentScope = this;
     const { id } = this.grnPurchaseForm.value;
     const selectedbdItem = this.items.filter(function (itm) { return itm.id == parentScope.grnPurchaseItems[index].itemId });
+    const tax = this.taxes.find(c => c.id == selectedbdItem[0].taxId);
     this.grnPurchaseItems[index].grnPurchaseId =  id;
     this.grnPurchaseItems[index].itemId =  selectedbdItem[0].id;
     this.grnPurchaseItems[index].itemCode =  selectedbdItem[0].itemCode;
     this.grnPurchaseItems[index].rate =  selectedbdItem[0].saleRate;
+    this.grnPurchaseItems[index].tax = tax.rate;
   }
 
   onPurchaseOrderSelect(){
@@ -245,8 +258,9 @@ export class GrnPurchaseComponent implements OnInit {
           discount:data[i].discount,
           rate:data[i].rate,
           itemName:data[i].itemName,
-          tax:18,
-          total:data[i].total
+          tax:data[i].tax,
+          total:data[i].total,
+          taxAmount: 0
         })
       }
     });
@@ -257,12 +271,13 @@ export class GrnPurchaseComponent implements OnInit {
     let sumAfterDiscount = sum - this.grnPurchaseItems[poItemIndex].discount;
     let tax = (sumAfterDiscount * this.grnPurchaseItems[poItemIndex].tax)/100;
     this.grnPurchaseItems[poItemIndex].total = sumAfterDiscount + tax;
+    this.grnPurchaseItems[poItemIndex].taxAmount = tax;
 
     this.generateTotalBill();
   }
 
   addNewGrnPurchasetem(){
-    this.grnPurchaseItems.push({id:0,grnPurchaseId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:18,total:null,});
+    this.grnPurchaseItems.push({id:0,grnPurchaseId:0,itemId:0,itemCode:"",quantity:1,discount:null,rate:null, itemName:null,tax:0,total:null, taxAmount: 0});
   }
   
   removeGrnPurchaseItems(index){
@@ -324,10 +339,11 @@ export class GrnPurchaseComponent implements OnInit {
     this.grnPurchaseItems.forEach(a => {
       compInstance.totalBill.subTotal += (a.quantity * a.rate);
       compInstance.totalBill.discount += a.discount;
+      compInstance.totalBill.tax += a.taxAmount;
     });
 
     let payableAmount = this.totalBill.subTotal - this.totalBill.discount;
-    this.totalBill.tax = (payableAmount * this.defaultTax )/100;
+    // this.totalBill.tax = (payableAmount * this.defaultTax )/100;
     this.totalBill.tax = this.totalBill.tax.toFixed(2)
     this.totalBill.totalPayable = payableAmount + parseFloat(this.totalBill.tax);
     this.totalBill.totalPayable = this.totalBill.totalPayable + ( this.totalBill.additionalCharges ? + this.totalBill.additionalCharges : 0);
@@ -350,10 +366,11 @@ export class GrnPurchaseComponent implements OnInit {
 
   private resetViewData(componentInstance, message){
     componentInstance.GetItems(componentInstance);
-        componentInstance.toastr.success(message, 'SUCCESS!', {
-          timeOut: 3000
-        });
-        componentInstance.resetForm();
+
+    componentInstance.toastr.success(message, 'SUCCESS!', {
+      timeOut: 3000
+    });
+    componentInstance.resetForm();
   }
 
 }
