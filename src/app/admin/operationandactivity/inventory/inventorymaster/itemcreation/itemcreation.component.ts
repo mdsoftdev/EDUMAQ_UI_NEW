@@ -73,6 +73,7 @@ export class ItemcreationComponent implements OnInit {
 
   GetItems() {
     this.settingsService.getAllItems().subscribe((data: Item[]) => {
+      data = this.populateItemTax(data);
       this.itemFilteredList = this.items = data;
     });
   }
@@ -180,6 +181,9 @@ createUpdateItem(componentInstance){
   if(componentInstance.uploadResponse && componentInstance.uploadResponse.imagePath){
     formData['image'] = componentInstance.uploadResponse.imagePath;
   }
+
+  // formData['colorId'] = formData['colorId'] ? formData['colorId'] : 0;
+
   const { id, isBundledProduct } = componentInstance.itemcreationForm.value;
   if (componentInstance.itemcreationForm.get('id').value === 0) {
     
@@ -333,6 +337,23 @@ onBundledItemSelect(index){
   const selectedbdItem = this.items.filter(function (itm) { return itm.id == parentScope.productBundles[index].itemId });
   this.productBundles[index].bundleId =  id;
   this.productBundles[index].code =  selectedbdItem[0].itemCode;
+}
+
+private populateItemTax(itemList){
+  if(!this.taxes){
+    return itemList;
+  }
+  if( this.taxes.length < 1){
+    return itemList;
+  }
+
+  itemList.forEach(i => {
+    const tax = this.taxes.find(t => t.id == i.taxId);
+    i.taxValue = tax.rate;
+
+  });
+
+  return itemList;
 }
 
 }

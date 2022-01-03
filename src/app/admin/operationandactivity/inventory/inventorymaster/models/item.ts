@@ -20,4 +20,5 @@ export interface Item {
     description : string;
     image : string;
     customName: string;
+    taxValue: string;
 }
