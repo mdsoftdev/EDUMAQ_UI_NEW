@@ -113,9 +113,9 @@ export class PurchaseorderComponent implements OnInit {
   }
 
   submitForm() {
-    console.log(this.purchaseOrderForm.value);
     this.submitted = true;
-    if (this.purchaseOrderForm.invalid || !this.purchaseOrderItems || !this.selectedSupplier) {
+    // validation start
+    if (this.purchaseOrderForm.invalid || !this.purchaseOrderItems) {
       // if (this.f.endDate.errors.mustMatch) {
       //   this.toastr.warning('End date should not less than start date ', 'WARNING!!!', {
       //     timeOut: 3000
@@ -123,7 +123,23 @@ export class PurchaseorderComponent implements OnInit {
       // }
       return;
     }
+    if(!this.selectedSupplier || (this.selectedSupplier && !this.selectedSupplier.id)){
+      this.toastr.warning('Please select a supplier', 'WARNING!!!', {
+            timeOut: 3000
+          });
+      return;
+    }
     
+    const f = this.purchaseOrderItems.find(e => !e.itemId);
+    if(f){
+      this.toastr.warning('Please select a item', 'WARNING!!!', {
+        timeOut: 3000
+      });
+      return;
+    }
+
+    // validation complete
+
     let compInstance = this;
     const { id  } = this.purchaseOrderForm.value;
 
@@ -204,9 +220,15 @@ export class PurchaseorderComponent implements OnInit {
   }
 
   generateItemName(itemList:Item[]){
+    if(!this.colors){
+      return itemList;
+    }
+    if(this.colors.length < 1){
+      return itemList;
+    }
     for (var index in itemList) {
       let color = this.colors.find(c => c.id === itemList[index].colorId);
-      itemList[index].customName = itemList[index].itemName + '_' + itemList[index].size + '_' + color.value; 
+      itemList[index].customName = itemList[index].itemName + '_' + itemList[index].size + '_' + (color ? color.value : ''); 
     }
 
     return itemList;
@@ -222,6 +244,8 @@ export class PurchaseorderComponent implements OnInit {
     this.purchaseOrderItems[index].itemCode =  selectedbdItem[0].itemCode;
     this.purchaseOrderItems[index].rate =  selectedbdItem[0].saleRate;
     this.purchaseOrderItems[index].tax = tax.rate;
+
+    this.calculateItemTotal(index);
   }
 
   calculateItemTotal(poItemIndex){
@@ -241,7 +265,9 @@ export class PurchaseorderComponent implements OnInit {
   removePurchaseOrderItems(index){
     if (index > -1 && this.purchaseOrderItems.length > 1) {
       this.purchaseOrderItems.splice(index, 1);
+      this.generateTotalBill();
     }
+    
   }
 
   // items end

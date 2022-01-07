@@ -47,6 +47,7 @@
                                     <div class="col-lg-12">
                                         <!-- <input type="text" class="form-control font-size-16"  placeholder="Classmate Pvt Ltd. (Auto Complete Search)" /> -->
                                         <ng-autocomplete form-control font-size-16
+                                        [ngClass]="{ 'autocomplete-container-error': submitted && !selectedSupplier.id }"
                                         [data]="suppliersFilteredList"
                                         [searchKeyword]="supplierSearchKeyword"
                                         (selected)='selectEvent($event)'
@@ -183,15 +184,20 @@
                                     <tbody>
                                         <tr *ngFor="let poItem of purchaseOrderItems; let i = index">
                                             <td>
-                                                <select class="form-control select2" (change)="onPurchaseOrderItemsSelect(i)" [(ngModel)]="purchaseOrderItems[i].itemId" [ngModelOptions]="{standalone: true}">
+                                                <select class="form-control select2" (change)="onPurchaseOrderItemsSelect(i)" 
+                                                [(ngModel)]="purchaseOrderItems[i].itemId" [ngModelOptions]="{standalone: true}"
+                                                [ngClass]="{ 'is-invalid': submitted && !purchaseOrderItems[i].itemId }">
                                                     <option>Select Item</option>
                                                     <option *ngFor="let item of items"  value={{item.id}}>{{item.customName}}</option>
                                                 </select>
                                             </td> 
                                             <td><input type="text" class="form-control" [ngModel]="poItem.itemCode" [ngModelOptions]="{standalone: true}" readonly/></td>
-                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.quantity" (change)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
-                                            <td  ><input type="text" class="form-control" [(ngModel)]="poItem.rate" (change)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
-                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.discount" (change)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
+                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.quantity" (change)="calculateItemTotal(i)"
+                                                (keyup)="calculateItemTotal(i)" [ngModelOptions]="{standalone: true}"/></td>
+                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.rate" (change)="calculateItemTotal(i)" 
+                                                (keyup)="calculateItemTotal(i)"[ngModelOptions]="{standalone: true}"/></td>
+                                            <td  ><input type="number" class="form-control" [(ngModel)]="poItem.discount" (change)="calculateItemTotal(i)" 
+                                                (keyup)="calculateItemTotal(i)"[ngModelOptions]="{standalone: true}"/></td>
                                             <td  >
                                                <input type="text" class="form-control " [ngModel]="poItem.tax" [ngModelOptions]="{standalone: true}" readonly/>
 
